@@ -23,3 +23,8 @@ void EstacionDeServicio::mostrarSurtidores() const {
 bool EstacionDeServicio::verificarFugas() const {
     return tanque->verificarFuga();
 }
+
+// Implementación del getter para obtener el ID
+int EstacionDeServicio::getId() const {
+    return id;
+}

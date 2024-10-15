@@ -18,6 +18,9 @@ public:
     void agregarSurtidor(Surtidor* nuevoSurtidor);
     void mostrarSurtidores() const;
     bool verificarFugas() const;
+
+    // Agrega este getter para el ID
+    int getId() const;
 };
 
 #endif // ESTACIONDESERVICIO_H
