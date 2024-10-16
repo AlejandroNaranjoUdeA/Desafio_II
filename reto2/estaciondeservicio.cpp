@@ -24,7 +24,34 @@ bool EstacionDeServicio::verificarFugas() const {
     return tanque->verificarFuga();
 }
 
-// Implementación del getter para obtener el ID
+// Implementacion del getter para obtener el ID
 int EstacionDeServicio::getId() const {
     return id;
 }
+
+void EstacionDeServicio::simularVenta() {
+    if (numSurtidores == 0) {
+        std::cout << "No hay surtidores disponibles para simular venta." << std::endl;
+        return;
+    }
+
+    // Simulación de venta: selecciona aleatoriamente un surtidor
+    int surtidorSeleccionado = rand() % numSurtidores;
+    Surtidor* surtidor = surtidores[surtidorSeleccionado];
+
+    // Simular litros vendidos
+    double litrosVendidos = 3 + (rand() % 18); // entre 3 y 20 litros
+    CategoriaCombustible categoria = static_cast<CategoriaCombustible>(rand() % 3);
+    double precioPorLitro = 5000; // Ejemplo de precio
+    double monto = litrosVendidos * precioPorLitro;
+
+    // Crear una nueva transacción
+    Transaccion* nuevaTransaccion = new Transaccion(contadorTransacciones + 1, "12/10/2024", litrosVendidos, categoria, monto);
+    surtidor->venderCombustible(nuevaTransaccion);
+
+    // Actualizar el tanque
+    tanque->extraerCombustible(categoria, litrosVendidos);
+
+    std::cout << "Venta simulada en surtidor " << surtidor->obtenerID() << ": " << litrosVendidos << " litros vendidos." << std::endl;
+}
+

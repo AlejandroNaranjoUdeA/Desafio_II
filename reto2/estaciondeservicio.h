@@ -18,6 +18,7 @@ public:
     void agregarSurtidor(Surtidor* nuevoSurtidor);
     void mostrarSurtidores() const;
     bool verificarFugas() const;
+    void simularVenta();
 
     // Agrega este getter para el ID
     int getId() const;
