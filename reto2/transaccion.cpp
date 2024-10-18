@@ -9,3 +9,15 @@ void Transaccion::mostrarTransaccion() const {
          << ", Litros: " << litros << ", Categoria: " << categoria
          << ", Monto: $" << monto << endl;
 }
+
+double Transaccion::getMonto() const {
+    return monto; // Devuelve el monto de la transacción
+}
+
+CategoriaCombustible Transaccion::getCategoria() const {
+    return categoria; // Devuelve la categoría de la transacción
+}
+
+double Transaccion::getLitros() const {
+    return litros; // Devuelve los litros de la transacción
+}

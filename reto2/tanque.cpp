@@ -19,7 +19,7 @@ void Tanque::extraerCombustible(CategoriaCombustible categoria, double cantidad)
     if (combustibleAlmacenado[categoria] >= cantidad) {
         combustibleAlmacenado[categoria] -= cantidad;
     } else {
-        std::cout << "No hay suficiente combustible para la categoría seleccionada." << std::endl;
+        std::cout << "No hay suficiente combustible para la categoria seleccionada." << std::endl;
     }
 }
 

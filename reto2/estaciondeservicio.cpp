@@ -26,7 +26,23 @@ void EstacionDeServicio::agregarSurtidor(Surtidor* nuevoSurtidor) {
         delete[] surtidores;  // Liberar el arreglo antiguo
         surtidores = nuevoArreglo;  // Actualizar el puntero
     }
-    surtidores[numSurtidores++] = nuevoSurtidor;
+    surtidores[numSurtidores++] = nuevoSurtidor; // Agregar el surtidor
+}
+
+// Método para eliminar un surtidor de la estación
+void EstacionDeServicio::eliminarSurtidor(int idSurtidor) {
+    for (int i = 0; i < numSurtidores; i++) {
+        if (surtidores[i]->obtenerID() == idSurtidor) {
+            delete surtidores[i]; // Liberar la memoria del surtidor
+            for (int j = i; j < numSurtidores - 1; j++) {
+                surtidores[j] = surtidores[j + 1]; // Desplazar los elementos
+            }
+            numSurtidores--; // Disminuir el contador de surtidores
+            std::cout << "Surtidor eliminado con exito." << std::endl;
+                return; // Salir después de eliminar
+        }
+    }
+    std::cout << "Surtidor no encontrado." << std::endl;
 }
 
 // Mostrar surtidores
@@ -53,14 +69,40 @@ void EstacionDeServicio::simularVenta() {
 
     double litrosVendidos = 3 + (rand() % 18); // entre 3 y 20 litros
     CategoriaCombustible categoria = static_cast<CategoriaCombustible>(rand() % 3);
-    double precioPorLitro = 5000; // Precio de ejemplo
-    double monto = litrosVendidos * precioPorLitro;
+    double monto = litrosVendidos * (categoria == Regular ? precioRegular : (categoria == Premium ? precioPremium : precioEcoExtra));
 
     Transaccion* nuevaTransaccion = new Transaccion(surtidor->obtenerID(), "12/10/2024", litrosVendidos, categoria, monto);
     surtidor->venderCombustible(nuevaTransaccion);
     tanque->extraerCombustible(categoria, litrosVendidos);
 
     std::cout << "Venta simulada en surtidor " << surtidor->obtenerID() << ": " << litrosVendidos << " litros vendidos." << std::endl;
+}
+
+// Calcular total de ventas
+double EstacionDeServicio::calcularVentasTotales() const {
+    double total = 0.0;
+    for (int i = 0; i < numSurtidores; i++) {
+        total += surtidores[i]->calcularVentasTotales(); // Asegúrate de tener este método en Surtidor
+    }
+    return total;
+}
+
+// Fijar precios del combustible
+void EstacionDeServicio::fijarPrecios(double precioRegular, double precioPremium, double precioEcoExtra) {
+    this->precioRegular = precioRegular;
+    this->precioPremium = precioPremium;
+    this->precioEcoExtra = precioEcoExtra;
+}
+
+// Reportar litros vendidos
+void EstacionDeServicio::reportarLitrosVendidos() const {
+    double totalRegular = 0, totalPremium = 0, totalEcoExtra = 0;
+    for (int i = 0; i < numSurtidores; i++) {
+        totalRegular += surtidores[i]->calcularLitrosVendidos(Regular);
+        totalPremium += surtidores[i]->calcularLitrosVendidos(Premium);
+        totalEcoExtra += surtidores[i]->calcularLitrosVendidos(EcoExtra);
+    }
+    std::cout << "Litros vendidos: Regular: " << totalRegular << ", Premium: " << totalPremium << ", EcoExtra: " << totalEcoExtra << std::endl;
 }
 
 // Getter para obtener ID
