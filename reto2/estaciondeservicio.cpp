@@ -46,7 +46,7 @@ void EstacionDeServicio::simularVenta() {
     double monto = litrosVendidos * precioPorLitro;
 
     // Crear una nueva transacción
-    Transaccion* nuevaTransaccion = new Transaccion(contadorTransacciones + 1, "12/10/2024", litrosVendidos, categoria, monto);
+    Transaccion* nuevaTransaccion = new Transaccion(surtidor->obtenerID(), "12/10/2024", litrosVendidos, categoria, monto);
     surtidor->venderCombustible(nuevaTransaccion);
 
     // Actualizar el tanque
@@ -54,4 +54,5 @@ void EstacionDeServicio::simularVenta() {
 
     std::cout << "Venta simulada en surtidor " << surtidor->obtenerID() << ": " << litrosVendidos << " litros vendidos." << std::endl;
 }
+
 
