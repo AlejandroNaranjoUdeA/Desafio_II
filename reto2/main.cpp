@@ -16,9 +16,11 @@ void mostrarMenu() {
 }
 
 int main() {
-    int opcion;
-    EstacionDeServicio* estaciones[10]; // Por ejemplo, máximo 10 estaciones
+    EstacionDeServicio** estaciones = new EstacionDeServicio*[10];  // Arreglo dinámico para estaciones de servicio
     int numEstaciones = 0;
+    int capacidadEstaciones = 10;  // Capacidad inicial de estaciones
+
+    int opcion;
 
     do {
         mostrarMenu();
@@ -27,11 +29,20 @@ int main() {
         switch (opcion) {
         case 1: {
             // Agregar estación
+            if (numEstaciones == capacidadEstaciones) {
+                capacidadEstaciones *= 2;  // Duplicar la capacidad de estaciones
+                EstacionDeServicio** nuevasEstaciones = new EstacionDeServicio*[capacidadEstaciones];
+                for (int i = 0; i < numEstaciones; i++) {
+                    nuevasEstaciones[i] = estaciones[i];
+                }
+                delete[] estaciones;
+                estaciones = nuevasEstaciones;
+            }
             int id;
             string nombre, ubicacion;
             cout << "Ingrese ID, nombre y ubicacion de la nueva estacion: ";
             cin >> id >> nombre >> ubicacion;
-            Tanque* tanque = new Tanque(100, 200, 150);  // Ejemplo de tanque
+            Tanque* tanque = new Tanque(100, 200, 150);  // Tanque de ejemplo
             estaciones[numEstaciones] = new EstacionDeServicio(id, nombre, ubicacion, tanque);
             numEstaciones++;
             cout << "Estacion agregada con exito." << endl;
@@ -47,12 +58,12 @@ int main() {
                 if (estaciones[i]->getId() == idEliminar) {
                     delete estaciones[i];  // Eliminar la estación
                     for (int j = i; j < numEstaciones - 1; j++) {
-                        estaciones[j] = estaciones[j + 1];  // Reajustar el array
+                        estaciones[j] = estaciones[j + 1];
                     }
                     numEstaciones--;
                     eliminado = true;
                     cout << "Estacion eliminada." << endl;
-                    break;
+                        break;
                 }
             }
             if (!eliminado) {
@@ -63,7 +74,7 @@ int main() {
         case 3: {
             // Verificar fugas
             int id;
-            cout << "Ingrese el ID de la estación para verificar fugas: ";
+            cout << "Ingrese el ID de la estacion para verificar fugas: ";
             cin >> id;
             for (int i = 0; i < numEstaciones; i++) {
                 if (estaciones[i]->getId() == id) {
@@ -80,7 +91,7 @@ int main() {
         case 4: {
             // Simular venta
             int id;
-            cout << "Ingrese el ID de la estación para simular venta: ";
+            cout << "Ingrese el ID de la estacion para simular venta: ";
             cin >> id;
             for (int i = 0; i < numEstaciones; i++) {
                 if (estaciones[i]->getId() == id) {
@@ -110,6 +121,12 @@ int main() {
             cout << "Opcion no valida." << endl;
         }
     } while (opcion != 6);
+
+    // Liberar memoria al final del programa
+    for (int i = 0; i < numEstaciones; i++) {
+        delete estaciones[i];
+    }
+    delete[] estaciones;
 
     return 0;
 }

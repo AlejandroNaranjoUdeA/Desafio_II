@@ -7,21 +7,21 @@
 class EstacionDeServicio {
 private:
     int id;
-    string nombre;
-    string ubicacion;
-    Surtidor* surtidores[12]; // Máximo 12 surtidores
+    std::string nombre;
+    std::string ubicacion;
+    Surtidor** surtidores; // Puntero doble para un arreglo dinámico de surtidores
     int numSurtidores;
+    int capacidadSurtidores; // Capacidad dinámica para surtidores
     Tanque* tanque;
 
 public:
-    EstacionDeServicio(int _id, string _nombre, string _ubicacion, Tanque* _tanque);
+    EstacionDeServicio(int _id, std::string _nombre, std::string _ubicacion, Tanque* _tanque);
+    ~EstacionDeServicio(); // Destructor para liberar memoria
     void agregarSurtidor(Surtidor* nuevoSurtidor);
     void mostrarSurtidores() const;
     bool verificarFugas() const;
     void simularVenta();
-
-    // Agrega este getter para el ID
-    int getId() const;
+    int getId() const; // Getter para obtener ID
 };
 
 #endif // ESTACIONDESERVICIO_H
